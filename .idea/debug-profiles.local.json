@@ -1,0 +1,15 @@
+{
+  "debug-profiles": [
+    {
+      "id": "1ac75cdf-6bbd-436a-a1ea-da336a2a4952",
+      "type": "stlink",
+      "name": "ST-LINK",
+      "server": {
+        "stLinkFrequencyKHz": 8000
+      },
+      "gdb": {
+        "persistentSession": false
+      }
+    }
+  ]
+}
