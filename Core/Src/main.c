@@ -2,6 +2,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
+#include "app_task.h"
+#include "bsp_vision.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -24,8 +28,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t rx_byte = 0;
-uint8_t rx_buf[11];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,24 +66,29 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   static const char msg[] = "STM32 ready\r\n";
   HAL_UART_Transmit(&huart2, (uint8_t *)msg, 13, 100);
-  HAL_UART_Receive_IT(&huart2, rx_buf, 11);
+  bsp_vision_init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
   while (1)
   {
+    app_task_10ms();
+    HAL_Delay(10);
 
-    /* USER CODE BEGIN WHILE */
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    /* USER CODE END 3 */
   }
+  /* USER CODE END 3 */
 }
+
 
 /**
   * @brief System Clock Configuration
@@ -122,11 +130,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  HAL_UART_Transmit(&huart2, rx_buf, 11, 50);
-  HAL_UART_Receive_IT(&huart2, rx_buf, 11);
-}
+
 /* USER CODE END 4 */
 
 /**
